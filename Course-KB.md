@@ -10,6 +10,7 @@ The lecture PDFs are the instructor originals. The linked Markdown files make sl
 | 2. Uninformed Search | [PDF](<slides/L2 Uninformed Search.pdf>) | [Text](<extract-slides/L2 Uninformed Search.md>) |
 | 3. Informed Search | [PDF](<slides/L3 Informed Search.pdf>) | [Text](<extract-slides/L3 Informed Search.md>) |
 | 4. Optimization | [PDF](<slides/L4 Optimization.pdf>) | [Text](<extract-slides/L4 Optimization.md>) |
+| 5. Constraint Satisfaction Problems | [PDF](<slides/L5 CSPs.pdf>) | [Text](<extract-slides/L5 CSPs.md>) |
 
 ## Adding a lecture
 
