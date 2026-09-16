@@ -9,6 +9,7 @@ The lecture PDFs are the instructor originals. The linked Markdown files make sl
 | 1. Introduction | [PDF](<slides/L1-Intro.pdf>) | [Text](<extract-slides/L1-Intro.md>) |
 | 2. Uninformed Search | [PDF](<slides/L2 Uninformed Search.pdf>) | [Text](<extract-slides/L2 Uninformed Search.md>) |
 | 3. Informed Search | [PDF](<slides/L3 Informed Search.pdf>) | [Text](<extract-slides/L3 Informed Search.md>) |
+| 4. Optimization | [PDF](<slides/L4 Optimization.pdf>) | [Text](<extract-slides/L4 Optimization.md>) |
 
 ## Adding a lecture
 
