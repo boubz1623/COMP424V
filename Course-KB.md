@@ -11,6 +11,9 @@ The lecture PDFs are the instructor originals. The linked Markdown files make sl
 | 3. Informed Search | [PDF](<slides/L3 Informed Search.pdf>) | [Text](<extract-slides/L3 Informed Search.md>) |
 | 4. Optimization | [PDF](<slides/L4 Optimization.pdf>) | [Text](<extract-slides/L4 Optimization.md>) |
 | 5. Constraint Satisfaction Problems | [PDF](<slides/L5 CSPs.pdf>) | [Text](<extract-slides/L5 CSPs.md>) |
+| 6. Game Playing | [PDF](<slides/L6 Game Playing.pdf>) | [Text](<extract-slides/L6 Game Playing.md>) |
+| 7. Alpha-beta | [PDF](<slides/L7 Alpha-beta.pdf>) | [Text](<extract-slides/L7 Alpha-beta.md>) |
+| 8. Monte Carlo Tree Search | [PDF](<slides/L8 MCTS.pdf>) | [Text](<extract-slides/L8 MCTS.md>) |
 
 ## Adding a lecture
 
