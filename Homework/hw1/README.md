@@ -1,52 +1,26 @@
 # Homework 1 — Working Files
 
-Source: `a1 - 2026.pdf`. Due Wed Sept 30, 9:00pm.
+Source: `a1 - 2026.pdf`. Due Wednesday, September 30, 2026, at 9:00pm.
 
 ## Files
 
-- **`q1_six_puzzle.py`** — Question 1 (Six-Puzzle), part (a).
-  Board representation, successor generation, path reconstruction, and
-  printing are implemented. The four search algorithms
-  (`breadth_first_search`, `uniform_cost_search`, `depth_first_search`,
-  `iterative_deepening_search` / `depth_limited_search`) are `TODO` stubs
-  for you to fill in.
-  - Parts (b) and (c) (admissibility of Manhattan distance under the new
-    cost scheme, and designing a dominating heuristic) are written-answer
-    questions — no code required, but you could extend this file with an
-    `a_star_search(start, goal, heuristic, cost_fn)` if you want to
-    empirically sanity-check a heuristic.
+- **`q1_six_puzzle.py`** — Question 1(a). Implements breadth-first search (`bfs`), uniform-cost search (`ucs`), depth-first search (`dfs`), and iterative deepening (`ids`, using `dls`). `ucs` accepts an optional `cost_fn`; without one, moves have unit cost. The script prints each solution path.
+- **`q3_search_optimization.py`** — Question 3. Implements hill climbing (`hc`) and local beam search (`beam`), along with the objective functions, neighbor generation, experiment runs, and summary tables. It uses 100 runs per setting and a fixed random seed for repeatable results. Beam search uses step size 0.1.
+- **`424_ab.docx`** — Current written-answer draft, including puzzle paths, explanations for Question 2, and Question 3 results and observations. Prepare the written responses as one PDF for submission.
+- **`a1 - 2026.pdf`** — Assignment instructions and questions.
 
-- **`q3_search_optimization.py`** — Question 3 (Search for Optimization).
-  `f1`, `f2`, neighbor generation, random sampling, and the
-  experiment/statistics/reporting scaffolding are implemented.
-  `hill_climbing` and `local_beam_search` are `TODO` stubs for you to
-  fill in. Running the file prints result tables for part (a) (step
-  sizes) and part (b) (beam widths); feel free to swap the tables for
-  the plots the assignment suggests.
+## Running the code
 
-- **`answers.md`** — scaffold for the written answers (Q1 a/b/c solution
-  paths and heuristic discussion, Q2 a–f, Q3 discussion of patterns).
-  Fill in and convert to PDF (or write by hand) for submission — the
-  assignment requires a single PDF of written responses, with code
-  submitted separately.
+From this folder, run:
 
-## Running
-
-```
-python "q1_six_puzzle.py"
-python "q3_search_optimization.py"
+```powershell
+python q1_six_puzzle.py
+python q3_search_optimization.py
 ```
 
-Both are pure-Python (only `math`, `random`, `statistics`, `collections`
-from the standard library) — no extra installs needed. If you add
-plotting for Q3, `matplotlib` is the natural choice (`pip install
-matplotlib`).
+Both scripts use only the Python standard library. The Q3 script prints tables; plotting is optional.
 
-## Reminders from the assignment
+## Assignment reminders
 
-- Q1: previously-explored states must not be re-added to the search
-  queue; break ties by preferring to move the lower-numbered piece
-  (`get_successors` already returns successors sorted by piece number
-  ascending, which makes this easy to respect in each algorithm).
-- Submit written answers as a single PDF, and code for Q1 and Q3 as
-  separate files, clearly labeled.
+- For Question 1, do not add explored states back to the search frontier. When priorities tie, prefer moving the lower-numbered piece; `get_successors` returns moves in that order.
+- Submit written responses as one PDF and submit code separately, clearly labeled, as required by the assignment.

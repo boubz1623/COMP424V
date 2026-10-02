@@ -14,6 +14,7 @@ The lecture PDFs are the instructor originals. The linked Markdown files make sl
 | 6. Game Playing | [PDF](<slides/L6 Game Playing.pdf>) | [Text](<extract-slides/L6 Game Playing.md>) |
 | 7. Alpha-beta | [PDF](<slides/L7 Alpha-beta.pdf>) | [Text](<extract-slides/L7 Alpha-beta.md>) |
 | 8. Monte Carlo Tree Search | [PDF](<slides/L8 MCTS.pdf>) | [Text](<extract-slides/L8 MCTS.md>) |
+| 9. Searching Under Uncertainty | [PDF](<slides/L9 Search With Uncertainty.pdf>) | [Text](<extract-slides/L9 Search With Uncertainty.md>) |
 
 ## Adding a lecture
 
