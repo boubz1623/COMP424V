@@ -21,14 +21,12 @@
             "id": "dad5756790d14c58",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "pdf",
               "state": {
-                "file": "Untitled.md",
-                "mode": "source",
-                "source": false
+                "file": "slides/L3 Informed Search.pdf"
               },
-              "icon": "lucide-file",
-              "title": "Untitled"
+              "icon": "lucide-file-text",
+              "title": "L3 Informed Search"
             }
           }
         ],
@@ -110,7 +108,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Untitled.md",
+                "file": "slides/L3 Informed Search.pdf",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -129,7 +127,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Untitled.md",
+                "file": "slides/L3 Informed Search.pdf",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -172,7 +170,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Untitled.md",
+                "file": "slides/L3 Informed Search.pdf",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -199,23 +197,22 @@
       "bases:Create new base": false
     }
   },
-  "active": "7f38f92cad4addab",
+  "active": "dad5756790d14c58",
   "lastOpenFiles": [
-    "__pycache__/extract_slides.cpython-313.pyc",
-    "__pycache__",
+    "slides/L2 Uninformed Search.pdf",
+    "slides/L1-Intro.pdf",
     "extract-slides/L3 Informed Search.md",
     "extract-slides/L2 Uninformed Search.md",
     "extract-slides/L1-Intro.md",
+    "Course-KB.md",
+    "Untitled.md",
+    "__pycache__/extract_slides.cpython-313.pyc",
+    "__pycache__",
     "extract-slides",
     "slides/L3 Informed Search.pdf",
-    "slides/L2 Uninformed Search.pdf",
-    "slides/L1-Intro.pdf",
     "slides",
-    "Course-KB.md",
     "extract_slides.py",
     "L3 Informed Search.pdf",
-    "L2 Uninformed Search.pdf",
-    "L1-Intro.pdf",
-    "Untitled.md"
+    "L2 Uninformed Search.pdf"
   ]
 }
