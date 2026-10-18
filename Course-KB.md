@@ -15,6 +15,7 @@ The lecture PDFs are the instructor originals. The linked Markdown files make sl
 | 7. Alpha-beta | [PDF](<slides/L7 Alpha-beta.pdf>) | [Text](<extract-slides/L7 Alpha-beta.md>) |
 | 8. Monte Carlo Tree Search | [PDF](<slides/L8 MCTS.pdf>) | [Text](<extract-slides/L8 MCTS.md>) |
 | 9. Searching Under Uncertainty | [PDF](<slides/L9 Search With Uncertainty.pdf>) | [Text](<extract-slides/L9 Search With Uncertainty.md>) |
+| 10. Propositional Logic | [PDF](<slides/L10 Propositional Logic.pdf>) | [Text](<extract-slides/L10 Propositional Logic.md>) |
 
 ## Adding a lecture
 

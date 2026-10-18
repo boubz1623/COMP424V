@@ -1,0 +1,61 @@
+﻿COMP 424 - Homework 2
+
+Question 1: Constraint satisfaction [50]
+
+1(a) Formulate the Sudoku as a CSP: variables, domains, constraints,
+     and constraint graph.
+
+Answer:
+
+
+1(b) Show the first ten steps of backtracking search.
+     Order: row, then column; values lowest to highest.
+
+Answer:
+
+
+1(c) Show the first ten steps of backtracking with one-step forward
+     checking. Use the same variable and value order as 1(b).
+
+Answer:
+
+
+1(d) Implement simulated annealing. Explain your formulation and design
+     choices. Test at least three settings, with 100 runs per setting
+     and at most 10,000 steps per run. Show the first five steps of one
+     run (boards and violation counts). Report successes and observations.
+
+Answer:
+
+
+Question 2: Search and game playing [30]
+
+2(a) Apply minimax to the given dots-and-boxes state and draw the tree.
+     Expand horizontal moves before vertical moves, then by row and column.
+
+Answer:
+
+
+2(b) Apply alpha-beta with the same expansion order. Show alpha and beta
+     values for all nodes. Is there an advantage to pruning?
+
+Answer:
+
+
+Question 3: Search under uncertainty [20]
+
+3(a) Play Connections to learn the rules. [No marks]
+
+
+3(b) Formulate Connections as a search problem using the components from
+     lectures. Is it observable, partially observable, or non-observable?
+     Is it deterministic?
+
+Answer:
+
+
+3(c) Explain how to use AND-OR search. What do AND and OR nodes represent?
+     How many branches does each have? Is this practical? Justify.
+
+Answer:
+
