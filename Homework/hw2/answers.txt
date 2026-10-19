@@ -1,61 +1,449 @@
 ﻿COMP 424 - Homework 2
 
+Antoine Boubez
+
 Question 1: Constraint satisfaction [50]
 
-1(a) Formulate the Sudoku as a CSP: variables, domains, constraints,
-     and constraint graph.
+1(a) Formulate this problem as a CSP. List the variables, their domains,
+     and the constraints. Draw the constraint graph.
+
+variables :
+one per empty cell Xij -> X12, X14, X21, X23, X32, X33, X41, X42, X43, X44 
+
+
+domains: every variable Xij's value is element of D = {1,2,3,4}
+
+constraints:
+Givens: X11 = 2, X13 = 4, X22 = 1, X24 = 2, X31 = 1, X34 = 3
+
+Rows:     Xij ≠ Xik     for every row i, and every j ≠ k
+Columns:  Xij ≠ Xkj     for every column j, and every i ≠ k
+
+Boxes:    Xij ≠ Xkl     for every (i, j) ≠ (k, l) in the same 2x2 box:
+              {X11, X12, X21, X22}, {X13, X14, X23, X24},
+              {X31, X32, X41, X42}, {X33, X34, X43, X44}
+constraint graph :
+image is at the end of the document
+
+
+
+
+
+
+1(b) Show the first ten steps of backtracking search on this problem,
+     where you order the variables in increasing order first by row, then
+     by column, and the values from lowest to highest. Recall that
+     backtracking search uses a depth-first strategy to expand the search
+     tree.
+(0) starting grid ( c= colum, r = row, b=box)
+2 . | 4 .
+. 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(1) X12 =3 (c2 has 1, r1 has 2, -> 3)
+2 3 | 4 .
+. 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(2) X14 = 1 (-> 1)
+2 3 | 4 1
+. 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(3) X21 = 4 (r2 has 1, r2 has 2, b has 3, -> 4)
+2 3 | 4 1
+4 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(4) X23 = 3 (r2 has 1, r2 has 2, -> 3)
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 . | . 3
+. . | . .
+(5) X32 =2 (r3 has 1, -> 2)
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 2 | . 3
+. . | . .
+(6) X33 -> no solution (r3 has 1, r3 has 2, r3 has 3, c3 has 4 -> backtrack to X32)
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 2 | . 3
+. . | . .
+(7) X32 = 4 (continues from step 5, r3 has 3, -> 4)
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | . 3
+. . | . .
+(8) X33 = 2 ( r3 has 1, ->2)
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | 2 3
+. . | . .
+(9) X41  = 3 (c1 has 1, c1 has 2, ->3)
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | 2 3
+3 . | . .
+(10) X42 =2 (c2 has 1, ->2)
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | 2 3
+3 2 | . .
+
+
+
+1(c) Show the first ten steps of backtracking search on this problem with
+     one-step forward checking, where you order the variables in
+     increasing order first by row, then by column, and the values from
+     lowest to highest.
+
+(0) starting grid 
+domains after pruning with the givens:
+X12{3} X14{1} X21{3,4} X23{3} X32{2,4} X33{2} X41{3,4} X42{2,3,4} X43{1,2} X44{1,4}
+2 . | 4 .
+. 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(1) X12 =3, prunes :  X21 -> {4}, X42 -> {2,4}
+2 3 | 4 .
+. 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(2) X14 = 1 , prunes : X44 - >{4}
+2 3 | 4 1
+. 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(3) X21 = 4 , prunes :  X41-> {3}
+2 3 | 4 1
+4 1 | . 2
+----+----
+1 . | . 3
+. . | . .
+(4) X23 = 3 , prunes : null
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 . | . 3
+. . | . .
+(5) X32 =2 , prunes : X33 ->{}
+impossible -> 2 is rejected
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 2 | . 3
+. . | . .
+(6) X32 = 4, prunes : X42 -> {2}
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | . 3
+. . | . .
+(7) X33 =2, prunes : X43 -> {1}
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | 2 3
+. . | . .
+(8) X41 =3, prunes : null
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | 2 3
+3 . | . .
+(9) X42 = 2 , prunes : null
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | 2 3
+3 2 | . .
+(10)X43 = 1, prunes : null
+2 3 | 4 1
+4 1 | 3 2
+----+----
+1 4 | 2 3
+3 2 | 1 .
+
+
+1(d) Write a simple program to implement a simulated annealing local
+     search strategy to solve this problem. Submit in writing your problem
+     formulation and document the algorithm design decisions that you
+     make. Run your algorithm with at least three different sets of design
+     choices (e.g., annealing schedule, initial temperature). Show the
+     first five steps of the algorithm on one run of the program for one
+     setting, including the game state and the number of constraint
+     violations in each step. Run the program 100 times with a maximum of
+     10000 steps per run. For each of the three settings, report the
+     number of runs in which the program finds a solution, and make note
+     of any other interesting points you observe.
+
+
+Code: q1d_simulated_annealing.py  
+Problem formulation
+- State: a full 4x4 grid. Givens never change, and each 2x2 box always
+  contains 1-4 exactly once.
+- Initial state: each box's missing digits placed in random order.
+- Neighbour: swap two non-given cells inside a random box.
+- Cost: number of repeated digits over all rows and columns
+  (4 - distinct digits, per row/column). Boxes are never violated.
+- Goal: cost = 0.
+
+Design decisions
+- Acceptance (lecture rule): always accept a better neighbour; otherwise
+  accept with p = exp(-delta / T), delta = new cost - current cost.
+- Cooling: T = T * alpha after every step.
+- Stop at cost 0 or after 10000 steps; return the best state found.
+- Swapping inside a box keeps the box constraint satisfied and limits
+  the search space to 2 * 2 * 6 * 6 = 144 states.
+
+Settings
+  A: T0 = 1.0, alpha = 0.999  (medium start, slow cooling)
+  B: T0 = 5.0, alpha = 0.99   (hot start)
+  C: T0 = 0.1, alpha = 0.9    (cold start, almost hill climbing)
+
+
+First five steps, setting A
+start, violations = 8
+  2 4 | 4 3
+  3 1 | 1 2
+  ----+----
+  1 2 | 1 3
+  4 3 | 4 2
+
+step 1 T = 1.0 delta = -2 accepted violations = 6
+  2 4 | 4 3
+  3 1 | 1 2
+  ----+----
+  1 2 | 1 3
+  4 3 | 2 4
+
+step 2 T = 0.999 delta = -2 accepted violations = 4
+  2 4 | 4 1
+  3 1 | 3 2
+  ----+----
+  1 2 | 1 3
+  4 3 | 2 4
+
+step 3 T = 0.998 delta = 2 rejected violations = 4
+  2 4 | 4 1
+  3 1 | 3 2
+  ----+----
+  1 2 | 1 3
+  4 3 | 2 4
+
+step 4 T = 0.997 delta = 0 accepted violations = 4
+  2 3 | 4 1
+  4 1 | 3 2
+  ----+----
+  1 2 | 1 3
+  4 3 | 2 4
+
+step 5 T = 0.996 delta = 0 accepted violations = 4
+  2 3 | 4 1
+  4 1 | 3 2
+  ----+----
+  1 2 | 4 3
+  4 3 | 2 1
+
+Results over 100 runs, max 10000 steps
+A: T0=1.0, alpha=0.999
+  solved: 100 / 100
+avg steps: 42.3
+max steps: 187
+B: T0=5.0, alpha=0.99
+  solved: 100 / 100
+avg steps: 71.4
+max steps: 227
+C: T0=0.1, alpha=0.9
+  solved: 100 / 100
+avg steps: 38.1
+max steps: 145
+
+Solution found:
+  2 3 | 4 1
+  4 1 | 3 2
+  ----+----
+  1 4 | 2 3
+  3 2 | 1 4
+
+Observations
+- All settings solved 100/100 runs, well under 10000 steps (max 227),
+  since there are only 144 possible states.
+- B was slowest (71.4 avg): at high T it often accepts worse moves
+  (delta = +2 at T = 5 is accepted with p = 0.67).
+- C was fastest (38.1 avg): it acts like hill climbing, which works since
+  this puzzle has few local minima, but could get stuck on a harder one.
+- delta = 0 moves are always accepted (exp(0) = 1), letting the search
+  cross plateaus (steps 4-5 in the trace).
+- Every run reaches the same solution as backtracking in 1(b)/(c).
+
+
+Question 2: Search and Game Playing [30]
+
+2(a) Apply the Minimax algorithm to the above state, by preferring
+     horizontal moves to vertical moves, and expanding in increasing order
+     first by row, then by column. For convenience, you can represent the
+     moves as (start row, start column, end row, end column), e.g. drawing
+     a vertical line in the bottom right corner can be represented as the
+     move (3, 3, 2, 3) or equivalently (2, 3, 3, 3). Draw the
+     corresponding search tree.
+     [Note: the preference for horizontal moves affects how you apply the
+     Minimax algorithm, but not how the players play the game.]
+
+TL/TR/BR /BL = top-left / top-right / bottom-right / bottom-right
+MAX root = -1
+|
++--(1,1,1,2)-- MIN = -1
+|   |
+|   +--(2,2,2,3)-- MAX = +1
+|   |   +--(1,2,2,2) [MAX: TL,TR]-- MIN = +1 --(2,3,3,3) [MIN: BR]-- +1
+|   |   +--(2,3,3,3) [MAX: BR]-- MIN = -1 --(1,2,2,2) [MIN: TL,TR]-- -1
+|   |
+|   +--(1,2,2,2) [MIN: TL]-- MAX = -1
+|   |   +--(2,2,2,3) [MAX: TR]-- MIN = -1 --(2,3,3,3) [MIN: BR]-- -1
+|   |   +--(2,3,3,3)-- MIN = -3 --(2,2,2,3) [MIN: TR,BR]-- -3
+|   |
+|   +--(2,3,3,3)-- MAX = -1
+|       +--(2,2,2,3) [MAX: BR]-- MIN = -1 --(1,2,2,2) [MIN: TL,TR]-- -1
+|       +--(1,2,2,2) [MAX: TL]-- MIN = -1 --(2,2,2,3) [MIN: TR,BR]-- -1
+|
+|
++--(2,2,2,3)-- MIN = -1
+|   |
+|   +--(1,1,1,2)-- MAX = +1
+|   |   +--(1,2,2,2) [MAX: TL,TR]-- MIN = +1 --(2,3,3,3) [MIN: BR]-- +1
+|   |   +--(2,3,3,3) [MAX: BR]-- MIN = -1 --(1,2,2,2) [MIN: TL,TR]-- -1
+|   |
+|   +--(1,2,2,2) [MIN: TR]-- MAX = -1
+|   |   +--(1,1,1,2) [MAX: TL]-- MIN = -1 --(2,3,3,3) [MIN: BR]-- -1
+|   |   +--(2,3,3,3) [MAX: BR]-- MIN = -1 --(1,1,1,2) [MIN: TL]-- -1
+|   |
+|   +--(2,3,3,3) [MIN: BR]-- MAX = -1
+|       +--(1,1,1,2)-- MIN = -3 --(1,2,2,2) [MIN: TL,TR]-- -3
+|       +--(1,2,2,2) [MAX: TR]-- MIN = -1 --(1,1,1,2) [MIN: TL]-- -1
+|
+|
++--(1,2,2,2)-- MIN = -1
+|   |
+|   +--(1,1,1,2) [MIN: TL]-- MAX = -1
+|   |   +--(2,2,2,3) [MAX: TR]-- MIN = -1 --(2,3,3,3) [MIN: BR]-- -1
+|   |   +--(2,3,3,3)-- MIN = -3 --(2,2,2,3) [MIN: TR,BR]-- -3
+|   |
+|   +--(2,2,2,3) [MIN: TR]-- MAX = -1
+|   |   +--(1,1,1,2) [MAX: TL]-- MIN = -1 --(2,3,3,3) [MIN: BR]-- -1
+|   |   +--(2,3,3,3) [MAX: BR]-- MIN = -1 --(1,1,1,2) [MIN: TL]-- -1
+|   |
+|   +--(2,3,3,3)-- MAX = +1
+|       +--(1,1,1,2) [MAX: TL]-- MIN = -1 --(2,2,2,3) [MIN: TR,BR]-- -1
+|       +--(2,2,2,3) [MAX: TR,BR]-- MIN = +1 --(1,1,1,2) [MIN: TL]-- +1
+|
+|
++--(2,3,3,3)-- MIN = -1
+    |
+    +--(1,1,1,2)-- MAX = -1
+    |   +--(2,2,2,3) [MAX: BR]-- MIN = -1 --(1,2,2,2) [MIN: TL,TR]-- -1
+    |   +--(1,2,2,2) [MAX: TL]-- MIN = -1 --(2,2,2,3) [MIN: TR,BR]-- -1
+    |
+    +--(2,2,2,3) [MIN: BR]-- MAX = -1
+    |   +--(1,1,1,2)-- MIN = -3 --(1,2,2,2) [MIN: TL,TR]-- -3
+    |   +--(1,2,2,2) [MAX: TR]-- MIN = -1 --(1,1,1,2) [MIN: TL]-- -1
+    |
+    +--(1,2,2,2)-- MAX = +1
+        +--(1,1,1,2) [MAX: TL]-- MIN = -1 --(2,2,2,3) [MIN: TR,BR]-- -1
+        +--(2,2,2,3) [MAX: TR,BR]-- MIN = +1 --(1,1,1,2) [MIN: TL]-- +1
+
+
+
+
+2(b) Apply the alpha-beta pruning method using the same order of node
+     expansion and show the alpha-beta values for all nodes. Is there any
+     advantage to using alpha-beta pruning?
+
+MAX root [-1, +inf] ret -1
+|
++--(1,1,1,2)-- MIN [-inf, -1] ret -1
+|   |
+|   +--(2,2,2,3)-- MAX [+1, +inf] ret +1
+|   |   +--(1,2,2,2) [MAX: TL,TR]-- MIN [-inf, +1] ret +1 --(2,3,3,3) [MIN: BR]-- +1
+|   |   +--(2,3,3,3) [MAX: BR]-- MIN [+1, -1] ret +1 --(1,2,2,2) [MIN: TL,TR]-- -1
+|   |
+|   +--(1,2,2,2) [MIN: TL]-- MAX [-1, +1] ret -1
+|   |   +--(2,2,2,3) [MAX: TR]-- MIN [-inf, -1] ret -1 --(2,3,3,3) [MIN: BR]-- -1
+|   |   +--(2,3,3,3)-- MIN [-1, -3] ret -1 --(2,2,2,3) [MIN: TR,BR]-- -3
+|   |
+|   +--(2,3,3,3)-- MAX [-1, -1] ret -1
+|       +--(2,2,2,3) [MAX: BR]-- MIN [-inf, -1] ret -1 --(1,2,2,2) [MIN: TL,TR]-- -1
+|       +--(1,2,2,2) [MAX: TL]-- PRUNED
+|
+|
++--(2,2,2,3)-- MIN [-1, -1] ret -1
+|   |
+|   +--(1,1,1,2)-- MAX [+1, +inf] ret +1
+|   |   +--(1,2,2,2) [MAX: TL,TR]-- MIN [-1, +1] ret +1 --(2,3,3,3) [MIN: BR]-- +1
+|   |   +--(2,3,3,3) [MAX: BR]-- MIN [+1, -1] ret +1 --(1,2,2,2) [MIN: TL,TR]-- -1
+|   |
+|   +--(1,2,2,2) [MIN: TR]-- MAX [-1, +1] ret -1
+|   |   +--(1,1,1,2) [MAX: TL]-- MIN [-1, -1] ret -1 --(2,3,3,3) [MIN: BR]-- -1
+|   |   +--(2,3,3,3) [MAX: BR]-- MIN [-1, -1] ret -1 --(1,1,1,2) [MIN: TL]-- -1
+|   |
+|   +--(2,3,3,3) [MIN: BR]-- PRUNED
+|
+|
++--(1,2,2,2)-- MIN [-1, -1] ret -1
+|   |
+|   +--(1,1,1,2) [MIN: TL]-- MAX [-1, +inf] ret -1
+|   |   +--(2,2,2,3) [MAX: TR]-- MIN [-1, -1] ret -1 --(2,3,3,3) [MIN: BR]-- -1
+|   |   +--(2,3,3,3)-- MIN [-1, -3] ret -1 --(2,2,2,3) [MIN: TR,BR]-- -3
+|   |
+|   +--(2,2,2,3) [MIN: TR]-- PRUNED
+|   +--(2,3,3,3)-- PRUNED
+|
+|
++--(2,3,3,3)-- MIN [-1, -1] ret -1
+    |
+    +--(1,1,1,2)-- MAX [-1, +inf] ret -1
+    |   +--(2,2,2,3) [MAX: BR]-- MIN [-1, -1] ret -1 --(1,2,2,2) [MIN: TL,TR]-- -1
+    |   +--(1,2,2,2) [MAX: TL]-- MIN [-1, -1] ret -1 --(2,2,2,3) [MIN: TR,BR]-- -1
+    |
+    +--(2,2,2,3) [MIN: BR]-- PRUNED
+    +--(1,2,2,2)-- PRUNED
+
+
+
+Question 3: Search Under Uncertainty [20]
+
+3(a) Play a game of Connections at
+     https://www.nytimes.com/games/connections to familiarize yourself
+     with the rules. (No marks)
+
+
+3(b) Formulate the Connections game for a given day as a search problem,
+     formally showing all parts of the search problem as shown in the
+     lectures. Is this an observable, partially observable, or
+     non-observable problem? Deterministic or not?
 
 Answer:
 
 
-1(b) Show the first ten steps of backtracking search.
-     Order: row, then column; values lowest to highest.
-
-Answer:
-
-
-1(c) Show the first ten steps of backtracking with one-step forward
-     checking. Use the same variable and value order as 1(b).
-
-Answer:
-
-
-1(d) Implement simulated annealing. Explain your formulation and design
-     choices. Test at least three settings, with 100 runs per setting
-     and at most 10,000 steps per run. Show the first five steps of one
-     run (boards and violation counts). Report successes and observations.
-
-Answer:
-
-
-Question 2: Search and game playing [30]
-
-2(a) Apply minimax to the given dots-and-boxes state and draw the tree.
-     Expand horizontal moves before vertical moves, then by row and column.
-
-Answer:
-
-
-2(b) Apply alpha-beta with the same expansion order. Show alpha and beta
-     values for all nodes. Is there an advantage to pruning?
-
-Answer:
-
-
-Question 3: Search under uncertainty [20]
-
-3(a) Play Connections to learn the rules. [No marks]
-
-
-3(b) Formulate Connections as a search problem using the components from
-     lectures. Is it observable, partially observable, or non-observable?
-     Is it deterministic?
-
-Answer:
-
-
-3(c) Explain how to use AND-OR search. What do AND and OR nodes represent?
-     How many branches does each have? Is this practical? Justify.
+3(c) Describe how you could attempt to solve the Connections search
+     problem using an AND-OR search tree. What would the AND and OR nodes
+     represent? How many branches are at each AND and OR node? Is this a
+     good idea in practice? Justify your answer.
 
 Answer:
 
