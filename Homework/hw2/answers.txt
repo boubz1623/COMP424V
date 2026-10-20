@@ -195,26 +195,25 @@ impossible -> 2 is rejected
 
 Code: q1d_simulated_annealing.py  
 Problem formulation
-- State: a full 4x4 grid. Givens never change, and each 2x2 box always
-  contains 1-4 exactly once.
-- Initial state: each box's missing digits placed in random order.
-- Neighbour: swap two non-given cells inside a random box.
-- Cost: number of repeated digits over all rows and columns
-  (4 - distinct digits, per row/column). Boxes are never violated.
-- Goal: cost = 0.
+A state is a 4x4 grid where the original 6 prefilled cells never change and where every 2x2 box contains 
+each digit once. The initial state is built by filling the remaining cells randomly from the available numbers.
+A neighbour is obtained by choosing a box and swapping 2 of the non-given cells.  The cost of a state is the number 
+of repeated digits across all rows and columns.  This is the equivalent of 4 minus the number of 
+distinct digits in each row and column, added up over all 4 rows and 4 columns, so a correct row or column contributes 0 
+and each repeated digit adds 1.  The boxes are always correct by construction.
 
 Design decisions
-- Acceptance (lecture rule): always accept a better neighbour; otherwise
-  accept with p = exp(-delta / T), delta = new cost - current cost.
-- Cooling: T = T * alpha after every step.
-- Stop at cost 0 or after 10000 steps; return the best state found.
-- Swapping inside a box keeps the box constraint satisfied and limits
-  the search space to 2 * 2 * 6 * 6 = 144 states.
+The neighbours are chosen by swapping inside a box so that the box constraint is always respected, and the search 
+only has to arrange the rows/columns. This also makes the search space small: the 4 boxes have 2, 2, 3 and 3 free cells, 
+so there are only 2 x 2 x 6 x 6 =144 possible states. On each step, a neighbour with a lower cost is always accepted. 
+A neighbour with an equal or higher cost is accepted with probability exp(-delta /T), where delta is the new cost minus the 
+current cost. After every step the temperature is lowered by multiplying it by alpha, so T = T x alpha. A run stops when the cost 
+reaches 0, or after 10000 steps, in which case it returns the best solution we found yet.
 
 Settings
-  A: T0 = 1.0, alpha = 0.999  (medium start, slow cooling)
-  B: T0 = 5.0, alpha = 0.99   (hot start)
-  C: T0 = 0.1, alpha = 0.9    (cold start, almost hill climbing)
+A: T0 = 1.0, a = 0.999
+B: T0 = 5.0, a = 0.99
+ C: T0 = 0.1, a = 0.9
 
 
 First five steps, setting A
@@ -282,15 +281,12 @@ Solution found:
   3 2 | 1 4
 
 Observations
-- All settings solved 100/100 runs, well under 10000 steps (max 227),
-  since there are only 144 possible states.
-- B was slowest (71.4 avg): at high T it often accepts worse moves
-  (delta = +2 at T = 5 is accepted with p = 0.67).
-- C was fastest (38.1 avg): it acts like hill climbing, which works since
-  this puzzle has few local minima, but could get stuck on a harder one.
-- delta = 0 moves are always accepted (exp(0) = 1), letting the search
-  cross plateaus (steps 4-5 in the trace).
-- Every run reaches the same solution as backtracking in 1(b)/(c).
+The puzzle was solved 100/100 times for all 3 different settings. No run came close to the max step limit. (max 227 steps)
+This makes sense since there are only 144 possible states.  B was the slowest (71.4 avg) because it accepted worse moves at a higher temperature.
+C was the fastest (38.1 avg) it behaved similar to hill climbing because of the very low temp.  This worked well since 
+the search space is small.  Moves with delta 0 are always accepted which lets it move across plateau.
+All runs had the same solution. (the only one)
+
 
 
 Question 2: Search and Game Playing [30]
@@ -374,6 +370,10 @@ MAX root = -1
      expansion and show the alpha-beta values for all nodes. Is there any
      advantage to using alpha-beta pruning?
 
+Yes there is an advantage to alpha-beta pruning.  Minmax looks at all 24 leaves, while a-b pruning looks
+at 13 of them and is still able to find the same value at the root.  It is able to get to the same result while 
+skipping a large part of the tree.
+
 MAX root [-1, +inf] ret -1
 |
 +--(1,1,1,2)-- MIN [-inf, -1] ret -1
@@ -437,13 +437,78 @@ Question 3: Search Under Uncertainty [20]
      lectures. Is this an observable, partially observable, or
      non-observable problem? Deterministic or not?
 
-Answer:
+P  = the way to split of the 16 words into groups of 4. ( the answer)
+number of splits : 16!/ ((4!)^4 x 4!) = 2627625
 
+states:
+-the set of splits that could still be P, given what we know.
+-the groups found
+-allowed number of mistakes left
+
+initial state:
+-all 2627625 splits
+-no groups found
+-4 errors left
+
+actions: 
+guess 4 of the remaining words (have not been guessed before)
+
+percepts: 
+after each try, determine if its correct/wrong/one away
+
+perception function: 
+if all 4 guessed words are in the same group -> correct
+if 3 of the 4 guessed words are in teh same group -> one away
+otherwise -> wrong
+
+transitions
+correct -> remove those 4 words from the pool and the group counts as found
+one away or wrong -> counts as a mistake and you have one less mistake remaining
+in all cases -> remove every split that would not have given this percept (it can't be P)
+
+goal : 
+find all 4 groups (P) before running out of mistakes.
+
+path cost:
+number of mistakes made
+
+It is partially observable since we can see the words, the group found and the number of mistakes left but we cannot see any goups or P.
+Each percept can only tell us an incomplete part of the answer, so we have to keep track of all the splits that could still be P.
+
+It is deterministic since P doesn't change during the game, so the same guess in the same state always gets the same percept. 
+The uncertainty comes from it being partially observable, not from the actions having undetermined outcomes.
 
 3(c) Describe how you could attempt to solve the Connections search
      problem using an AND-OR search tree. What would the AND and OR nodes
      represent? How many branches are at each AND and OR node? Is this a
      good idea in practice? Justify your answer.
 
-Answer:
+
+
+root: start of the game (all splits possible, no groups found, 4 mistakes left)
+
+-alternate between our guess (OR node) and the game's percept (AND node)
+-repeat until the game is won or lost
+
+-solution = a plan that says which guess to make after every possible percept, and wins in every branch
+
+what they represent :
+OR nodes: our choice of which 4 words to guess (we choose the action)
+AND nodes: the percept the game gives after a guess -> correct/one away/wrong (the game chooses)
+
+number of branches:
+OR nodes: one per possible guess -> at most C(16,4) = 1820 at the start, then at most 495, then at most 70,
+then 1 (fewer if some guesses were already tried)
+AND nodes: one per percept that is still possible -> at most 3 (only 1 when 4 words are left, since the guess
+has to be correct)
+
+is it a good idea in practice ?
+No
+-the tree is too big: the first OR node already has 1820 branches, each guess has up to 3 percepts, and we have
+ to keep track of 2627625 possible splits
+-a winning plan doesn't exist: a game has at most 7 guesses (3 mistakes + 4 correct) and each guess has at most
+ 3 percepts -> a plan can only end in at most 3^7 = 2187 different ways. Each way it wins only works for one P,
+ so a plan can win for at most 2187 of the 2627625 splits -> the AND-OR search would return failure
+-the tree doesnt use the meaning of the words and only looks at which splits are still possible.  Doing it this way keeps so many options
+and makes the tree too big.  
 
